@@ -1,0 +1,28 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: reservation-service
+    description: reservation service for my hotel booking
+    version : @project.version@
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/myhotel
+    username : root
+    password : root
+  jpa:
+    hibernate :
+      ddl-auto : create
+      show-sql : true
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8383/eureka/
+  instance:
+    hostname: localhost
+
+
