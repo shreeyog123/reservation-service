@@ -4,18 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel {
+public class Address {
 
-    private Long hotelId;
+    private String buildingName;
+    private String city;
+    private String state;
+    private String country;
+    private Integer pin;
 
-    private String hotelName;
 
-    private List<RoomAvailable> roomAvailable;
+
 }

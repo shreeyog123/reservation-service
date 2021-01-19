@@ -7,15 +7,22 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel {
+public class GuestDetails {
 
-    private Long hotelId;
+    private String guestFirstName;
 
-    private String hotelName;
+    private String guestLastName;
 
-    private List<RoomAvailable> roomAvailable;
+    private long phoneNumber;
+
+    private String email;
+
+    private Address address;
+
+    private List<StayHistory> stayHistory;
+
 }

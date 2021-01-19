@@ -5,17 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Hotel {
+@NoArgsConstructor
+public class HotelUpdateRequest {
 
-    private Long hotelId;
+    private long hotelId;
 
-    private String hotelName;
+    private String roomType;
 
-    private List<RoomAvailable> roomAvailable;
+    private String status;
+
+
+
 }

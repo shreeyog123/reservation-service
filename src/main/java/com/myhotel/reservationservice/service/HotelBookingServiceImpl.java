@@ -1,36 +1,77 @@
 package com.myhotel.reservationservice.service;
 
+import com.myhotel.reservationservice.exception.HotelRoomException;
 import com.myhotel.reservationservice.model.BookHotelRequest;
-import com.myhotel.reservationservice.model.HotelDetails;
+import com.myhotel.reservationservice.model.GuestDetails;
+import com.myhotel.reservationservice.model.Hotel;
+import com.myhotel.reservationservice.model.RoomAvailable;
+import com.myhotel.reservationservice.model.entity.BookingEntity;
 import com.myhotel.reservationservice.repository.HotelBookingServiceRepository;
+import com.myhotel.reservationservice.servicesProxy.GuestServiceProxy;
 import com.myhotel.reservationservice.servicesProxy.HotelServiceProxy;
+import com.myhotel.reservationservice.utils.BusinessValidationUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Slf4j
 @Service
 public class HotelBookingServiceImpl implements HotelBookingService {
+
+    public static final String REQUESTED_HOTEL_ROOM_IS_NOT_AVAILABLE = "Requested Hotel room is not available";
 
    private final HotelBookingServiceRepository bookingServiceRepository;
 
    private final HotelServiceProxy hotelServiceProxy;
 
-    public HotelBookingServiceImpl(HotelBookingServiceRepository bookingServiceRepository, HotelServiceProxy hotelServiceProxy) {
+   private final GuestServiceProxy guestServiceProxy;
+
+   private final BusinessValidationUtils validationUtils;
+
+    public HotelBookingServiceImpl(
+            HotelBookingServiceRepository bookingServiceRepository,
+            HotelServiceProxy hotelServiceProxy,
+            GuestServiceProxy guestServiceProxy, BusinessValidationUtils validationUtils) {
         this.bookingServiceRepository = bookingServiceRepository;
         this.hotelServiceProxy = hotelServiceProxy;
+        this.guestServiceProxy = guestServiceProxy;
+        this.validationUtils = validationUtils;
     }
 
     @Override
-    public String bookAHotelForGuest(final BookHotelRequest guestDetailsRequest) {
+    public String bookAHotelForGuest(final BookHotelRequest bookHotelRequest) {
 
-        HotelDetails hotelDetails = hotelServiceProxy.getHotelDetailsByHotelId(guestDetailsRequest.getHotelId(),
-                guestDetailsRequest.getBookingStartDate(),
-                guestDetailsRequest.getBookingEndDate());
+        /*List<BookingEntity> bookingEntityList =
+                bookingServiceRepository.getHotelBookingDetailsByHotelIdAndRoomCode(bookHotelRequest.getHotelId());
+        log.info("bookingEntityList {} ", bookingEntityList);*/
 
+        Hotel hotelDetails = hotelServiceProxy.getHotelDetailsByHotelId(bookHotelRequest.getHotelId());
+        log.info("hotel details {} ", hotelDetails);
 
+        if(validationUtils.isHotelRoomAvailable(bookHotelRequest, hotelDetails).isEmpty()){
+            throw new HotelRoomException(REQUESTED_HOTEL_ROOM_IS_NOT_AVAILABLE);
+        }
 
-        // check available details by room id and start date end end date
-        // check capacity of guest
-        // save booking
-        // save booking by guest id
-        return null;
+        GuestDetails guestDetails = guestServiceProxy.getGuestDetails(bookHotelRequest.getGuestId());
+        log.info("guest details {} ", guestDetails);
+
+        BookingEntity booking = BookingEntity.builder()
+                .hotelId(bookHotelRequest.getHotelId())
+                .guestId(bookHotelRequest.getGuestId())
+                .bookingStartDate(bookHotelRequest.getBookingStartDate())
+                .bookingEndDate(bookHotelRequest.getBookingEndDate())
+                .roomType(bookHotelRequest.getRoomType())
+                .bookingStatus("CONFIRMED")
+                .guests(bookHotelRequest.getNumberOfGuest())
+                .build();
+        bookingServiceRepository.save(booking);
+
+        hotelServiceProxy.updateHotel(booking.getHotelId(), booking.getRoomType(), booking.getBookingStatus());
+
+        return "booking confirmed";
     }
+
+
 }

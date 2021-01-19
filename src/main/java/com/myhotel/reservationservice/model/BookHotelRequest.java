@@ -10,13 +10,13 @@ import java.time.LocalDate;
 @Builder
 public class BookHotelRequest {
 
-    private String hotelId;
+    private long hotelId;
 
-    private String guestId;
-
-    private String roomCode;
+    private long guestId;
 
     private String roomType;
+
+    private long numberOfGuest;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate bookingStartDate;

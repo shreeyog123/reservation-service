@@ -13,13 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class RoomAvailable {
 
-    private String roomCode;
-
     private String roomType;
 
-    private Integer price;
+    private long price;
 
-    private LocalDate availableStartDate;
-
-    private LocalDate availableEndDate;
+    private long availableRooms;
 }

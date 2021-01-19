@@ -1,4 +1,4 @@
-package com.myhotel.contract;
+package com.myhotel.reservationservice.contract;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

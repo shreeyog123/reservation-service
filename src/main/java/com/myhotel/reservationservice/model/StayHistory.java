@@ -5,17 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel {
+public class StayHistory {
 
-    private Long hotelId;
-
+    private long hotelId;
     private String hotelName;
-
-    private List<RoomAvailable> roomAvailable;
+    private String bookedRoomCode;
+    private String bookingStatus;
+    private LocalDate bookingStartDate;
+    private LocalDate bookingEndDate;
 }

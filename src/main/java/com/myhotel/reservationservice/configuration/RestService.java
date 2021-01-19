@@ -1,4 +1,4 @@
-package com.myhotel.reservationservice.configaration;
+package com.myhotel.reservationservice.configuration;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
