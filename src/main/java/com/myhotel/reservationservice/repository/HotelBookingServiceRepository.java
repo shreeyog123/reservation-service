@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface HotelBookingServiceRepository extends CrudRepository<BookingEntity, Long> {
 
-    @Query(value = "from BookingEntity where hotelId = :hotelId")
-    List<BookingEntity> getHotelBookingDetailsByHotelIdAndRoomCode(@Param("hotelId") Long hotelId);
+    @Query(value = "from BookingEntity where guestId = :guestId")
+    List<BookingEntity> getBookingInformationByGuestId(@Param("guestId") long guestId);
 }

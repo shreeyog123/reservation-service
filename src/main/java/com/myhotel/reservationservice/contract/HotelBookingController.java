@@ -1,13 +1,11 @@
 package com.myhotel.reservationservice.contract;
 
 import com.myhotel.reservationservice.model.BookHotelRequest;
+import com.myhotel.reservationservice.model.BookingResponse;
 import com.myhotel.reservationservice.service.HotelBookingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -22,11 +20,23 @@ public class HotelBookingController implements HotelBookingContract {
 
 
     @Override
-    @PostMapping("add")
+    @PostMapping("/")
     public ResponseEntity<String> bookAHotel(@RequestBody final BookHotelRequest guestDetailsRequest) {
 
         bookingService.bookAHotelForGuest(guestDetailsRequest);
 
         return ResponseEntity.ok().body("success");
     }
+
+    @Override
+    @GetMapping("/details/{guestId}")
+    public ResponseEntity<BookingResponse> bookingDetails(@PathVariable("guestId") long guestId){
+
+        BookingResponse bookingDetails = bookingService.getBookingDetailsByGuestId(guestId);
+        log.info("booking details {} ", bookingDetails);
+
+        return ResponseEntity.ok(bookingDetails);
+
+    }
+
 }

@@ -1,10 +1,7 @@
 package com.myhotel.reservationservice.service;
 
 import com.myhotel.reservationservice.exception.HotelRoomException;
-import com.myhotel.reservationservice.model.BookHotelRequest;
-import com.myhotel.reservationservice.model.GuestDetails;
-import com.myhotel.reservationservice.model.Hotel;
-import com.myhotel.reservationservice.model.RoomAvailable;
+import com.myhotel.reservationservice.model.*;
 import com.myhotel.reservationservice.model.entity.BookingEntity;
 import com.myhotel.reservationservice.repository.HotelBookingServiceRepository;
 import com.myhotel.reservationservice.servicesProxy.GuestServiceProxy;
@@ -13,6 +10,7 @@ import com.myhotel.reservationservice.utils.BusinessValidationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,10 +41,6 @@ public class HotelBookingServiceImpl implements HotelBookingService {
     @Override
     public String bookAHotelForGuest(final BookHotelRequest bookHotelRequest) {
 
-        /*List<BookingEntity> bookingEntityList =
-                bookingServiceRepository.getHotelBookingDetailsByHotelIdAndRoomCode(bookHotelRequest.getHotelId());
-        log.info("bookingEntityList {} ", bookingEntityList);*/
-
         Hotel hotelDetails = hotelServiceProxy.getHotelDetailsByHotelId(bookHotelRequest.getHotelId());
         log.info("hotel details {} ", hotelDetails);
 
@@ -71,6 +65,32 @@ public class HotelBookingServiceImpl implements HotelBookingService {
         hotelServiceProxy.updateHotel(booking.getHotelId(), booking.getRoomType(), booking.getBookingStatus());
 
         return "booking confirmed";
+    }
+
+    @Override
+    public BookingResponse getBookingDetailsByGuestId(final long guestId) {
+
+        List<BookingEntity> bookingEntity= bookingServiceRepository.getBookingInformationByGuestId(guestId);
+        log.info("booking entity {} ", bookingEntity);
+
+        List<Booking> bookings = new ArrayList<>();
+
+        bookingEntity.forEach(b->{
+            Hotel hotelDetails = hotelServiceProxy.getHotelDetailsByHotelId(b.getHotelId());
+            log.info("hotel details {} ", hotelDetails);
+
+           bookings.add( Booking.builder()
+                    .hotelName(hotelDetails.getHotelName())
+                    .roomType(b.getRoomType())
+                    .bookingStatus(b.getBookingStatus())
+                    .bookingStartDate(b.getBookingStartDate())
+                    .bookingEndDate(b.getBookingEndDate())
+                    .build());
+        });
+
+        return BookingResponse.builder()
+                .bookings(bookings)
+                .build();
     }
 
 
