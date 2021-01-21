@@ -1,4 +1,4 @@
-package com.myhotel.reservationservice.model;
+package com.myhotel.reservationservice.model.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

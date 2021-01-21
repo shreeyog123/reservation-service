@@ -1,6 +1,9 @@
 package com.myhotel.reservationservice.utils;
 
-import com.myhotel.reservationservice.model.*;
+import com.myhotel.reservationservice.model.request.BookHotelRequest;
+import com.myhotel.reservationservice.model.response.GuestDetails;
+import com.myhotel.reservationservice.model.response.Hotel;
+import com.myhotel.reservationservice.model.response.StayHistory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

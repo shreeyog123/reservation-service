@@ -1,9 +1,8 @@
 package com.myhotel.reservationservice.utils;
 
-import com.myhotel.reservationservice.exception.HotelRoomException;
-import com.myhotel.reservationservice.model.BookHotelRequest;
-import com.myhotel.reservationservice.model.Hotel;
-import com.myhotel.reservationservice.model.RoomAvailable;
+import com.myhotel.reservationservice.model.request.BookHotelRequest;
+import com.myhotel.reservationservice.model.response.Hotel;
+import com.myhotel.reservationservice.model.response.RoomAvailable;
 import com.myhotel.reservationservice.model.entity.BookingEntity;
 import org.springframework.stereotype.Component;
 

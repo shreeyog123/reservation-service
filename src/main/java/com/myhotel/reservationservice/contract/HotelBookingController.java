@@ -1,15 +1,16 @@
 package com.myhotel.reservationservice.contract;
 
-import com.myhotel.reservationservice.model.BookHotelRequest;
-import com.myhotel.reservationservice.model.BookingResponse;
+import com.myhotel.reservationservice.model.request.BookHotelRequest;
+import com.myhotel.reservationservice.model.response.BookingResponse;
+import com.myhotel.reservationservice.model.response.ReservationResponse;
 import com.myhotel.reservationservice.service.HotelBookingService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("booking")
 public class HotelBookingController implements HotelBookingContract {
 
     private final HotelBookingService bookingService;
@@ -18,25 +19,38 @@ public class HotelBookingController implements HotelBookingContract {
         this.bookingService = bookingService;
     }
 
-
     @Override
-    @PostMapping("/")
-    public ResponseEntity<String> bookAHotel(@RequestBody final BookHotelRequest guestDetailsRequest) {
+    public ResponseEntity<ReservationResponse> bookAHotel(final BookHotelRequest guestDetailsRequest) {
 
-        bookingService.bookAHotelForGuest(guestDetailsRequest);
+        log.info("request for book a hotel request {}", guestDetailsRequest);
 
-        return ResponseEntity.ok().body("success");
+        final String bookedMessage = bookingService.bookAHotelForGuest(guestDetailsRequest);
+        log.info("booked message {} ", bookedMessage);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ReservationResponse.builder().message(bookedMessage).build());
     }
 
     @Override
-    @GetMapping("/details/{guestId}")
-    public ResponseEntity<BookingResponse> bookingDetails(@PathVariable("guestId") long guestId){
+    public ResponseEntity<BookingResponse> getBookingDetailsByGuestId(final long guestId){
 
-        BookingResponse bookingDetails = bookingService.getBookingDetailsByGuestId(guestId);
-        log.info("booking details {} ", bookingDetails);
+        log.info("get booking details by guest id {}", guestId);
+
+        final BookingResponse bookingDetails = bookingService.getBookingDetailsByGuestId(guestId);
+        log.info("booking details successfully get bookingDetails{} ", bookingDetails);
 
         return ResponseEntity.ok(bookingDetails);
 
+    }
+
+    @Override
+    public ResponseEntity<ReservationResponse> cancelBooking(final long bookingId) {
+
+        log.info("cancel booking for bookingId {} ", bookingId);
+
+        final String cancelMessage = bookingService.cancelBooking(bookingId);
+        log.info("cancel message {}",cancelMessage);
+
+        return ResponseEntity.accepted().body(ReservationResponse.builder().message(cancelMessage).build());
     }
 
 }

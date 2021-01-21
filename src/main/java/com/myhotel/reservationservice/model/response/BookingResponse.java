@@ -1,4 +1,4 @@
-package com.myhotel.reservationservice.model;
+package com.myhotel.reservationservice.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,15 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel {
+public class BookingResponse {
 
-    private Long hotelId;
+    List<Booking> bookings;
 
-    private String hotelName;
 
-    private List<RoomAvailable> roomAvailable;
+
+
+
 }

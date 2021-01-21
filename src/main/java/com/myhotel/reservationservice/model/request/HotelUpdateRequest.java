@@ -1,4 +1,4 @@
-package com.myhotel.reservationservice.model;
+package com.myhotel.reservationservice.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

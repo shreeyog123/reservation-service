@@ -1,7 +1,8 @@
 package com.myhotel.reservationservice.servicesProxy;
 
-import com.myhotel.reservationservice.model.Hotel;
-import com.myhotel.reservationservice.model.HotelUpdateRequest;
+import com.myhotel.reservationservice.model.response.Hotel;
+import com.myhotel.reservationservice.model.response.HotelResponse;
+import com.myhotel.reservationservice.model.request.HotelUpdateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,5 +16,5 @@ public interface HotelServiceProxy {
      Hotel getHotelDetailsByHotelId(@PathVariable("hotelId") final Long hotelId);
 
      @RequestMapping(value = "/hotel/", method = RequestMethod.PUT)
-     String updateHotel(@RequestBody final HotelUpdateRequest hotelUpdateRequest);
+     HotelResponse updateHotel(@RequestBody final HotelUpdateRequest hotelUpdateRequest);
 }
