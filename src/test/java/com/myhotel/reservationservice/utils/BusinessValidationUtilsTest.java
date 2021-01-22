@@ -1,74 +1,112 @@
 package com.myhotel.reservationservice.utils;
 
 import com.myhotel.reservationservice.model.request.BookHotelRequest;
-import com.myhotel.reservationservice.model.response.GuestDetails;
 import com.myhotel.reservationservice.model.response.Hotel;
-import com.myhotel.reservationservice.model.response.StayHistory;
+import com.myhotel.reservationservice.model.response.RoomAvailable;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class BusinessValidationUtilsTest {
 
 
     BusinessValidationUtils validationUtils = new BusinessValidationUtils();
 
-    public void test(){
+    @Test
+    public void testByHotelTypeAndNumberOfRooms() {
 
-        //validationUtils.validateGuestAndHotelDetails(getGuestDetails(), getHotelDetails(), getBookingRequest());
+        List<RoomAvailable> availableRooms = validationUtils.isHotelRoomAvailable(getBookingRequest(), getHotelDetails());
+
+        assertEquals(1,availableRooms.size());
+
+    }
+
+    @Test
+    public void testByHotelTypeAndOnlyOneRoomsAvailable() {
+
+        List<RoomAvailable> availableRooms = validationUtils.isHotelRoomAvailable(getBookingRequestKing(), getHotelDetails());
+
+        assertEquals(1,availableRooms.size());
+
+    }
+
+    @Test
+    public void testByHotelTypeAndNumberOfRoomsNotAvailable() {
+
+        List<RoomAvailable> availableRooms = validationUtils.isHotelRoomAvailable(getBookingRequestLarge(), getHotelDetails());
+
+        assertEquals(0,availableRooms.size());
 
     }
 
     private Hotel getHotelDetails() {
-        return null;
+
+        Hotel hotel = Hotel.builder()
+                .hotelId(1L)
+                .hotelName("Space")
+                .roomAvailable(getAvailableRooms())
+                .build();
+        return hotel;
+    }
+
+    private List<RoomAvailable> getAvailableRooms() {
+        List<RoomAvailable> availableRooms = new ArrayList<>();
+        RoomAvailable roomAvailable1 = RoomAvailable.builder()
+                .availableRooms(2)
+                .roomType("Queen")
+                .price(8000L)
+                .build();
+        RoomAvailable roomAvailable2 = RoomAvailable.builder()
+                .availableRooms(1)
+                .roomType("King")
+                .price(10000L)
+                .build();
+        availableRooms.add(roomAvailable1);
+        availableRooms.add(roomAvailable2);
+
+        return availableRooms;
+
     }
 
     private BookHotelRequest getBookingRequest() {
-        return null;
+
+        BookHotelRequest bookingRequest = BookHotelRequest.builder()
+                .bookingStartDate(LocalDate.now())
+                .bookingEndDate(LocalDate.now().plusDays(1))
+                .guestId(1)
+                .hotelId(1)
+                .numberOfGuest(2)
+                .roomType("Queen")
+                .build();
+        return bookingRequest;
     }
 
-
-    private GuestDetails getGuestDetails(){
-
-
-
-       List<StayHistory> stayHistories = new ArrayList<>();
-
-       StayHistory stay1 = StayHistory.builder()
-               .hotelId(1)
-               .bookingStartDate(LocalDate.now().minusDays(5))
-               .bookingEndDate(LocalDate.now().minusDays(3))
-               .bookedRoomCode("Q101")
-               .bookingStatus("FEEDBACK")
-               .build();
-
-       StayHistory stay2 = StayHistory.builder()
-               .hotelId(1)
-               .bookingStartDate(LocalDate.now())
-               .bookingEndDate(LocalDate.now().minusDays(3))
-               .bookedRoomCode("Q101")
-               .bookingStatus("BOOKED")
-               .build();
-
-       StayHistory stay3 = StayHistory.builder()
-               .hotelId(2)
-               .bookingStartDate(LocalDate.now())
-               .bookingEndDate(LocalDate.now().minusDays(3))
-               .bookedRoomCode("K101")
-               .bookingStatus("BOOKED")
-               .build();
-
-       stayHistories.add(stay1);
-       stayHistories.add(stay2);
-       stayHistories.add(stay3);
-
-        GuestDetails guestDetails = GuestDetails.builder()
-                .stayHistory(stayHistories)
+    private BookHotelRequest getBookingRequestKing() {
+        BookHotelRequest bookingRequest = BookHotelRequest.builder()
+                .bookingStartDate(LocalDate.now())
+                .bookingEndDate(LocalDate.now().plusDays(1))
+                .guestId(1)
+                .hotelId(1)
+                .numberOfGuest(2)
+                .roomType("King")
                 .build();
+        return bookingRequest;
+    }
 
-       return guestDetails;
-
+    private BookHotelRequest getBookingRequestLarge() {
+        BookHotelRequest bookingRequest = BookHotelRequest.builder()
+                .bookingStartDate(LocalDate.now())
+                .bookingEndDate(LocalDate.now().plusDays(1))
+                .guestId(1)
+                .hotelId(1)
+                .numberOfGuest(2)
+                .roomType("Large")
+                .build();
+        return bookingRequest;
     }
 
 

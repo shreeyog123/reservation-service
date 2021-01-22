@@ -14,7 +14,7 @@ public interface HotelBookingService {
 
     String bookAHotelForGuest(final BookHotelRequest guestDetailsRequest);
 
-    BookingResponse getBookingDetailsByGuestId(final long guestId);
+    BookingResponse getBookingDetailsByGuestId(final Long guestId);
 
-    String cancelBooking(final long bookingId);
+    String cancelBooking(final Long bookingId);
 }

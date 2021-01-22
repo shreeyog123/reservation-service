@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public interface HotelBookingContract {
 
     @ApiOperation(
-            value = "Request for book a hotel",
+            value = "Request for book a hotel.",
             response = ReservationResponse.class,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             httpMethod = "POST"
