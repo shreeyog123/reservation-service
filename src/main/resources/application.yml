@@ -16,13 +16,13 @@ spring:
       ddl-auto : create
       show-sql : true
 
-eureka:
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://localhost:8383/eureka/
-  instance:
-    hostname: localhost
+#eureka:
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8383/eureka/
+#  instance:
+#    hostname: localhost
 
 
