@@ -6,6 +6,8 @@ spring:
     name: reservation-service
     description: reservation service for my hotel booking
     version : @project.version@
+  zipkin:
+    base-url: http://127.0.0.1:9411/
 
   datasource:
     url: jdbc:mysql://localhost:3306/myhotel
